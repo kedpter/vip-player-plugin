@@ -25,7 +25,10 @@ const fetchFromUrl = url => {
 			else
 			{
 				console.log('fetch from remote site');
-				fetch(url).then((response) => response.json()).then(listjson => resolve(listjson['list']));
+				fetch(url).then((response) => {
+					alert('更新成功，请点击确定');
+					return response.json();
+				}).catch((response) => alert('更新失败，请检查网络后再尝试')).then(listjson => resolve(listjson['list']));
 			}
 		});
 	});
