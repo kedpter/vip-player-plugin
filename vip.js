@@ -1,7 +1,57 @@
+
 $( document ).ready(function() {
 	const api_file_url = "https://raw.githubusercontent.com/iodefog/VipVideo/master/VipVideo/Helper/vlist.json";
 
-	fetchFromUrl(api_file_url).then(filterApis).then(createApiElements);
+	const default_player_list = {
+		"list": [
+				{
+						"name": "1223-1",
+						"url": "http://v.d9y.net/vip/?url="
+				},
+				{
+						"name": "1223-2",
+						"url": "http://mimijiexi.top/?url="
+				},
+				{
+						"name": "1223-3",
+						"url": "http://55jx.top/?url="
+				},
+				{
+						"name": "1223-4",
+						"url": "http://playx.top/?url="
+				},
+				{
+						"name": "1223-5",
+						"url": "http://nitian9.com/?url="
+				},
+				{
+						"name": "1223-6",
+						"url": "http://19g.top/?url="
+				},
+				{
+						"name": "1223-7",
+						"url": "http://52088.online/?url="
+				},
+				{
+						"name": "5月-21",
+						"url": "http://jiexi.071811.cc/jx2.php?url="
+				},
+				{
+						"name": "9月-2",
+						"url": "http://jqaaa.com/jx.php?url="
+				},
+				{
+						"name": "5月-4",
+						"url": "http://beaacc.com/api.php?url="
+				}]
+			};
+
+	filterApis(default_player_list["list"]).then(createApiElements);
+	// fetchFromUrl(api_file_url).then(filterApis).then(createApiElements);
+
+	$("#use_default").click(function () {
+		filterApis(default_player_list["list"]).then(createApiElements);
+	});
 
 	$("#update").click(function () {
 		chrome.storage.sync.set({"vip-player-list": "undefined"}, function(){
@@ -10,25 +60,31 @@ $( document ).ready(function() {
 	});
 
 
+
 });
 
 const fetchFromUrl = url => {
 	return new Promise((resolve, reject) => {
-		chrome.storage.sync.get({"vip-player-list": "undefined"}, function (apis) {
+		chrome.storage.sync.get({"vip-player-list": "undefined"}, function (ch_storage) {
+			apis = ch_storage["vip-player-list"]
 			// exists in db => do nothing
-			if (apis["vip-player-list"] !== "undefined")
+			if (apis !== "undefined")
 			{
 				console.log('fetch from local db');
-				resolve(apis["vip-player-list"]);
+				resolve(apis);
 			}
 			// not exist => fetch it
 			else
 			{
+				// createAutoClosingAlert('更新失败，请检查网络后再尝试')
+				// createAutoClosingAlert('更新成功，请点击确定');
+
 				console.log('fetch from remote site');
 				fetch(url).then((response) => {
-					alert('更新成功，请点击确定');
+					// createAutoClosingAlert('更新成功，请点击确定');
+					$('#status').text("更新成功");
 					return response.json();
-				}).catch((response) => alert('更新失败，请检查网络后再尝试')).then(listjson => resolve(listjson['list']));
+				}).catch((response) => $('#status').text("更新失败，可能需要翻墙")).then(listjson => resolve(listjson['list']));
 			}
 		});
 	});
