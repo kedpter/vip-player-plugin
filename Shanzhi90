@@ -1,0 +1,21 @@
+Vip-Player
+一个用来看国内各大视频网站的Chrome插件，解析接口是由其它网站整合来的，接口来源VipVideo。
+
+安装
+Chrome扩展 => 开发者模式 => 添加该插件。
+
+使用
+打开要看的视频网页，点击插件，选择数据源即可观看。
+
+点击使用默认数据源会加载本地默认数据源。 点击更新数据源会从远程接口获取最新数据源(可能需要VPN翻墙)。
+
+Releases
+No releases published
+Packages
+No packages published
+Languages
+JavaScript
+81.3%
+ 
+HTML
+18
